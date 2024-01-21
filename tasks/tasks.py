@@ -43,7 +43,7 @@ def serve(c):
 def run(c):
     """Train and evaluate a model."""
     from radix_se_challenge.data import load_train_test
-    from radix_se_challenge.model import evaluate, train
+    from radix_se_challenge.model.usage import train, evaluate
 
     logger.info("Loading the data...")
     df_train, df_test = load_train_test()
