@@ -43,7 +43,7 @@ def predict_genres(request: PredictionRequest):
     model_path = Path("src/radix_se_challenge/model/binaries")
     if not (model_path / "classifier.pickle").exists():
         raise HTTPException(status_code=500, detail="Model file not found")
-
+    
     with open(model_path / "classifier.pickle", "rb") as f:
         clf = pickle.load(f)
 
@@ -59,7 +59,19 @@ def predict_genres(request: PredictionRequest):
 
     # Transform probabilities to genres
     preds = []
+    
+    # -probalities to sort the probabilities in descending order
     for args in (-probalities).argsort():
         preds.append([binarizer.classes_[idx] for idx in args[:5]])
 
     return Prediction(genres=preds[0])
+
+
+# # to try it out in the console of your docker.
+
+# # try this command : curl -X POST \
+#   'http://localhost:8000/genres/predict' \
+#   -H 'Content-Type: application/json' \
+#   -d '{
+#     "synopsis": "A group of young mutants with superpowers fight to save their city from a hostile alien invasion."
+# }'
