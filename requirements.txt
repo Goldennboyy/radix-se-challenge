@@ -32,3 +32,6 @@ pytest-xdist~=3.0.2
 safety~=2.3.3
 tsfresh~=0.19.0
 reverse-geocoder~=1.5.1
+
+# docker
+wheel~=0.42.0

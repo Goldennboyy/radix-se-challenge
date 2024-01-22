@@ -1,0 +1,13 @@
+version: '1.0'
+
+services:
+  radix-service:
+    container_name: radix-service
+    build:
+      dockerfile: Dockerfile
+      context: .
+    network_mode: "bridge"
+    ports:
+      - "8000:8000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
