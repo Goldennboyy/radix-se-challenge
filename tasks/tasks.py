@@ -34,7 +34,7 @@ def serve(c):
     """Serve the API."""
     logger.info("Serving the API...")
     c.run(
-        "uvicorn radix_se_challenge.api:app",
+        "uvicorn radix_se_challenge.api:app --reload",
         pty=True,
     )
 
@@ -43,7 +43,7 @@ def serve(c):
 def run(c):
     """Train and evaluate a model."""
     from radix_se_challenge.data import load_train_test
-    from radix_se_challenge.model.usage import train, evaluate
+    from radix_se_challenge.model import train, evaluate
 
     logger.info("Loading the data...")
     df_train, df_test = load_train_test()

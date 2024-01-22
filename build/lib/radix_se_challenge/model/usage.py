@@ -7,8 +7,8 @@ from pathlib import Path
 import pandas as pd
 
 from radix_se_challenge.constants import MDL_F
-from radix_se_challenge.model import Model
 from radix_se_challenge.model.evaluation import apk
+from radix_se_challenge.model.main import Model
 
 
 def train(df: pd.DataFrame, mdl_f: Path | None = None) -> None:
@@ -59,4 +59,3 @@ if __name__ == "__main__":
 
     # Evaluate the model
     _ = evaluate(df_test)
-
