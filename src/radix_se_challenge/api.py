@@ -1,7 +1,9 @@
+"""API endpoints for predicting movie genres."""
+
 from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-import pandas as pd
+import pandas as pd 
 import pickle
 import os
 from typing import List
@@ -9,13 +11,13 @@ from typing import List
 app = FastAPI(
     title="SE challenge",
     description="Hiring challenge for the Software Engineer applicants.",
-    version="0.0.0",
+    version="0.0.0",  
 )
 
 class PredictionRequest(BaseModel):
     """Request model for predicting genres from a synopsis."""
     synopsis: str
-
+        
 class Prediction(BaseModel):
     """Response model for predicting genres."""
     genres: List[str]
@@ -27,7 +29,11 @@ def index():
 
 @app.post("/genres/predict", response_model=Prediction)
 def predict_genres(request: PredictionRequest):
-    """Predict movie genres from synopsis."""
+    """Predict movie genres from synopsis.
+    
+    The goal is to load saved model and makes prediction on the synopsis text.
+    Returns predicted genres.
+    """
 
     # Validate input
     if not request.synopsis:
@@ -48,12 +54,12 @@ def predict_genres(request: PredictionRequest):
         tfidf = pickle.load(f)
 
     # Make prediction
-    df = pd.DataFrame([{"synopsis": request.synopsis}])
-    probs = clf.predict_proba(tfidf.transform(df.synopsis))
+    df = pd.DataFrame([{"synopsis": request.synopsis}]) 
+    probalities = clf.predict_proba(tfidf.transform(df.synopsis))
 
     # Transform probabilities to genres
     preds = []
-    for args in (-probs).argsort():
+    for args in (-probalities).argsort():
         preds.append([binarizer.classes_[idx] for idx in args[:5]])
 
     return Prediction(genres=preds[0])
